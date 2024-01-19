@@ -18,13 +18,13 @@
                     </a>																
                 </li>
                 <li class="nav-item">
-                    <a href="categories.html" class="nav-link">
+                    <a href="{{ route('categories.list') }}" class="nav-link {{ Request::route()->named('categories.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-file-alt"></i>
                         <p>Category</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="subcategory.html" class="nav-link">
+                    <a href="subcategory.html" class="nav-link {{ Request::route()->named('sub-categories.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-file-alt"></i>
                         <p>Sub Category</p>
                     </a>
