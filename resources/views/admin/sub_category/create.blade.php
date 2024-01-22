@@ -24,10 +24,12 @@ Laravel Shop :: Administrative Panel
 <section class="content">
     <!-- Default box -->
     <div class="container-fluid">
+        <form action="" method="post" id="subCategoryForm" name="subCategoryForm">
+            @csrf
         <div class="card">
             <div class="card-body">								
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="name">Category</label>
                             <select name="category" id="category" class="form-control">
@@ -45,19 +47,31 @@ Laravel Shop :: Administrative Panel
                             <input type="text" name="name" id="name" class="form-control" placeholder="Name">
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="email">Slug</label>
                             <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug">	
                         </div>
-                    </div>									
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="status">Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="1">Active</option>
+                                <option value="0">Block</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>							
         </div>
         <div class="pb-5 pt-3">
-            <button class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Create</button>
             <a href="subcategory.html" class="btn btn-outline-dark ml-3">Cancel</a>
         </div>
+        </form>
     </div>
     <!-- /.card -->
 </section>
@@ -66,5 +80,53 @@ Laravel Shop :: Administrative Panel
 @endsection
 
 @section('customJs')
-    
+<script>
+    $('#name').change( function () {
+        var element = $(this);
+        $('button[type=submit]').prop('disabled', true);
+        $.ajax({
+            url: '{{ route("getSlug") }}',
+            type: 'GET',
+            data: {title: element.val()},
+            dataType: 'json',
+            success: function(response) {
+                $('button[type=submit]').prop('disabled', false);
+                if (response['status'] == true) {
+                    $('#slug').val(response['slug']);
+                }
+            }
+        });
+    });
+
+    $("#subCategoryForm").submit(function(event) {
+        event.preventDefault();
+        var element = $(this);
+        $('button[type=submit]').prop('disabled', true);
+        $.ajax({
+            url: '{{ route("categories.store") }}',
+            type: 'post',
+            data: element.serializeArray(),
+            dataType: 'json',
+            success: function(response) {
+                $('button[type=submit]').prop('disabled', false);
+                if (response['status'] == true) {
+                    window.location.href="{{ route('categories.list') }}";
+                    $('#name').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
+                    $('#slug').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
+                } else {
+                    var errors = response['errors'];
+                    if (errors['name']) {
+                        $('#name').addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors['name']);
+                    }
+
+                    if (errors['slug']) {
+                        $('#slug').addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors['slug']);
+                    }
+                }
+            }, error: function(jqXHR, exception) {
+                console.log('something went wrong');
+            }
+        });
+    });
+</script>
 @endsection

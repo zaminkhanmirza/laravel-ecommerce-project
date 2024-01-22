@@ -8,6 +8,8 @@ use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Event;
+use App\Events\CategoryCreated;
 
 class CategoryController extends Controller
 {
@@ -70,6 +72,8 @@ class CategoryController extends Controller
             }
 
             $request->session()->flash('success', 'Category added successfully');
+
+            event(new CategoryCreated(2));
 
             return response()->json([
                 'status' => true,
@@ -137,6 +141,7 @@ class CategoryController extends Controller
             }
 
             $request->session()->flash('success', 'Category updated successfully');
+
 
             return response()->json([
                 'status' => true,
