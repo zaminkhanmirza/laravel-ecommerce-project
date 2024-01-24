@@ -113,8 +113,6 @@ class CategoryController extends Controller
             'slug' => 'required|unique:categories,slug,'.$category->id.',id',
         ]);
 
-        
-
         $request->validate([]);
         if ($validator->passes()) {
             $category->name = $request->name;

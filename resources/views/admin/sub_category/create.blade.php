@@ -14,7 +14,7 @@ Laravel Shop :: Administrative Panel
                 <h1>Create Sub Category</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="subcategory.html" class="btn btn-primary">Back</a>
+                <a href="{{ route('sub-categories.list') }}" class="btn btn-primary">Back</a>
             </div>
         </div>
     </div>
@@ -39,12 +39,14 @@ Laravel Shop :: Administrative Panel
                                     @endforeach
                                 @endif
                             </select>
+                            <p></p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control" placeholder="Name">
+                            <p></p>
                         </div>
                     </div>
                 </div>
@@ -52,7 +54,8 @@ Laravel Shop :: Administrative Panel
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="email">Slug</label>
-                            <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug">	
+                            <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug">
+                            <p></p>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -62,6 +65,7 @@ Laravel Shop :: Administrative Panel
                                 <option value="1">Active</option>
                                 <option value="0">Block</option>
                             </select>
+                            <p></p>
                         </div>
                     </div>
                 </div>
@@ -69,7 +73,7 @@ Laravel Shop :: Administrative Panel
         </div>
         <div class="pb-5 pt-3">
             <button type="submit" class="btn btn-primary">Create</button>
-            <a href="subcategory.html" class="btn btn-outline-dark ml-3">Cancel</a>
+            <a href="{{ route('sub-categories.list') }}" class="btn btn-outline-dark ml-3">Cancel</a>
         </div>
         </form>
     </div>
@@ -103,14 +107,14 @@ Laravel Shop :: Administrative Panel
         var element = $(this);
         $('button[type=submit]').prop('disabled', true);
         $.ajax({
-            url: '{{ route("categories.store") }}',
+            url: '{{ route("sub-categories.store") }}',
             type: 'post',
             data: element.serializeArray(),
             dataType: 'json',
             success: function(response) {
                 $('button[type=submit]').prop('disabled', false);
                 if (response['status'] == true) {
-                    window.location.href="{{ route('categories.list') }}";
+                    window.location.href="{{ route('sub-categories.list') }}";
                     $('#name').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
                     $('#slug').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
                 } else {
