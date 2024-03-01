@@ -98,7 +98,6 @@ class CategoryController extends Controller
 
     public function update($categoryId, Request $request)
     {
-        // dd($categoryId);
         $category = Category::find($categoryId);
         if (empty($category)) {
             $request->session()->flash('error', 'Category not found');
