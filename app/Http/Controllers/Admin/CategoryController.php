@@ -73,7 +73,7 @@ class CategoryController extends Controller
 
             $request->session()->flash('success', 'Category added successfully');
 
-            event(new CategoryCreated(2));
+            // event(new CategoryCreated(2));
 
             return response()->json([
                 'status' => true,
